@@ -3,26 +3,26 @@
 <script type="text/javascript">
   class ModeToggle {
     static get MODE_KEY() {
-      return 'mode';
+      return "mode";
     }
     static get MODE_ATTR() {
-      return 'data-mode';
+      return "data-mode";
     }
     static get DARK_MODE() {
-      return 'dark';
+      return "dark";
     }
     static get LIGHT_MODE() {
-      return 'light';
+      return "light";
     }
     static get ID() {
-      return 'mode-toggle';
+      return "mode-toggle";
     }
 
     constructor() {
       let self = this;
 
-      {%- comment -%} always follow the system prefers {%- endcomment -%}
-      this.sysDarkPrefers.addEventListener('change', () => {
+      <!-- always follow the system prefers -->
+      this.sysDarkPrefers.addEventListener("change", () => {
         if (self.hasMode) {
           self.clearMode();
         }
@@ -41,7 +41,7 @@
     }
 
     get sysDarkPrefers() {
-      return window.matchMedia('(prefers-color-scheme: dark)');
+      return window.matchMedia("(prefers-color-scheme: dark)");
     }
 
     get isPreferDark() {
@@ -60,7 +60,7 @@
       return sessionStorage.getItem(ModeToggle.MODE_KEY);
     }
 
-    {%- comment -%} get the current mode on screen {%- endcomment -%}
+    // get the current mode on screen
     get modeStatus() {
       if (this.hasMode) {
         return this.mode;
@@ -70,12 +70,18 @@
     }
 
     setDark() {
-      document.documentElement.setAttribute(ModeToggle.MODE_ATTR, ModeToggle.DARK_MODE);
+      document.documentElement.setAttribute(
+        ModeToggle.MODE_ATTR,
+        ModeToggle.DARK_MODE
+      );
       sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.DARK_MODE);
     }
 
     setLight() {
-      document.documentElement.setAttribute(ModeToggle.MODE_ATTR, ModeToggle.LIGHT_MODE);
+      document.documentElement.setAttribute(
+        ModeToggle.MODE_ATTR,
+        ModeToggle.LIGHT_MODE
+      );
       sessionStorage.setItem(ModeToggle.MODE_KEY, ModeToggle.LIGHT_MODE);
     }
 
@@ -84,16 +90,14 @@
       sessionStorage.removeItem(ModeToggle.MODE_KEY);
     }
 
-    {%- comment -%}
-      Notify another plugins that the theme mode has changed
-    {%- endcomment -%}
+    // Notify another plugins that the theme mode has changed
     notify() {
       window.postMessage(
         {
           direction: ModeToggle.ID,
           message: this.modeStatus
         },
-        '*'
+        "*"
       );
     }
 
